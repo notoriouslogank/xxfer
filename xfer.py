@@ -5,10 +5,9 @@ import tarfile
 
 import tqdm
 import yaml
-from prompt_toolkit import print_formatted_text
-from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
+from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.output import ColorDepth
 from prompt_toolkit.styles import Style
 from rich import print
@@ -16,12 +15,8 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
-console = Console()
-
-
 with open("config.yml", "r") as yml:
     get_yaml = yaml.safe_load(yml)
-
 
 SEPARATOR = get_yaml["server"]["separator"]
 BUFFER_SIZE = get_yaml["server"]["buffer_size"]
@@ -66,9 +61,7 @@ def sender_info():
                     highlight=True,
                 )
             )
-            console.rule("[bold red]Remote IP")
             remote_ip = session.prompt("Remote IP\n> ")
-            # port = session.prompt("Port\n> ")
             if remote_ip in known_hosts:
                 server_ip = get_yaml["client"]["known_hosts"][remote_ip]["ip"]
                 server_port = get_yaml["client"]["known_hosts"][remote_ip]["port"]
