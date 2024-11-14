@@ -136,10 +136,10 @@ def main():
 
 if len(sys.argv) > 1:
     try:
-        if args.receive == True:
+        if args.receive:
             print("Waiting for file(s)...")
             Compressor.unpack(cli_receive())
-        elif args.receive == False:
+        else:
             host, port, file = prepare_cli()
             cli_send(host, port, file)
     except Exception:
