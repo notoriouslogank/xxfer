@@ -104,7 +104,6 @@ def prepare_cli():
 
 
 def cli_receive():
-    print("cli receive")
     server = RemoteHost()
     server.receive()
 

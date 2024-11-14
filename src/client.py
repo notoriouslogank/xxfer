@@ -8,7 +8,6 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.output import ColorDepth
 from prompt_toolkit.styles import Style
 from rich import print
-from rich.panel import Panel
 
 from src.packer import Compressor
 
