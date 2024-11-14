@@ -1,3 +1,4 @@
+import time
 import argparse
 import sys
 from pathlib import Path
@@ -149,7 +150,6 @@ if len(sys.argv) >= 3:
 elif len(sys.argv) <= 3:
     try:
         if args.receive:
-            print("Waiting for file(s)...")
             filename = cli_receive()
             Compressor.unpack(filename)
             sys.exit()
