@@ -139,11 +139,10 @@ if len(sys.argv) > 1:
         if args.receive:
             print("Waiting for file(s)...")
             Compressor.unpack(cli_receive())
-        else:
-            host, port, file = prepare_cli()
-            cli_send(host, port, file)
     except Exception:
         pass
+    host, port, file = prepare_cli()
+    cli_send(host, port, file)
 
 if __name__ == "__main__":
     main()
