@@ -6,7 +6,7 @@ from pathlib import Path
 from time import sleep
 
 from prompt_toolkit import PromptSession
-
+from rich.prompt import Prompt
 from src.client import Client
 from src.packer import Compressor
 from src.server import RemoteHost
@@ -24,6 +24,15 @@ parser = argparse.ArgumentParser(
     prog="xfer",
     description="Application to send/receive files to/from remote machine.",
     epilog="Thanks for playing",
+)
+
+parser.add_argument(
+    "-r",
+    "--receive",
+    required=False,
+    help="Listen for incoming connections.",
+    action="store_true",
+    default=argparse.SUPPRESS,
 )
 
 parser.add_argument(
@@ -52,15 +61,6 @@ parser.add_argument(
     nargs="?",
     type=Path,
     required=False,
-    default=argparse.SUPPRESS,
-)
-
-parser.add_argument(
-    "-r",
-    "--receive",
-    required=False,
-    help="Listen for incoming connections.",
-    action="store_true",
     default=argparse.SUPPRESS,
 )
 
@@ -148,12 +148,12 @@ def main():
 if len(sys.argv) >= 3:
     host, port, file = prepare_cli()
     cli_send(host, port, file)
-elif len(sys.argv) <= 3:
+elif len(sys.argv) == 2:
     try:
         if args.receive == True:
             print("args.receive loop")
             cli_receive()
     except Exception:
         pass
-# if __name__ == "__main__":
-#    print("main")
+elif len(sys.argv) == 1:
+    main()
