@@ -8,8 +8,8 @@ try:
     with open("config.yml", "r") as yml:
         get_config = yaml.safe_load(yml)
         settings = get_config["settings"]
-except FileNotFoundError:
-    print("Cannot locate config.yml.")
+except [FileNotFoundError, NameError]:
+    print("Cannot locate config.yml.\nPlease ensure file exists in this directtory.")
 else:
     pass
 
