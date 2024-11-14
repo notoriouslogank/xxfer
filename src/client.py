@@ -112,6 +112,7 @@ def populate_known_hosts(known_hosts: list, length: int):
     while counter > 0:
         host_list.append(known_hosts[counter])
         counter -= 1
+    print(host_list)
 
 
 def main():

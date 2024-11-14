@@ -34,15 +34,6 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "-r",
-    "--receive",
-    required=False,
-    help="Listen for incoming connections.",
-    action="store_true",
-    default=argparse.SUPPRESS,
-)
-
-parser.add_argument(
     "-f",
     "--file",
     help="Absolute or relative path to file or directory to send",
@@ -52,20 +43,28 @@ parser.add_argument(
     default=argparse.SUPPRESS,
 )
 
+parser.add_argument(
+    "-r",
+    "--receive",
+    required=False,
+    help="Listen for incoming connections.",
+    action="store_true",
+    default=argparse.SUPPRESS,
+)
+
 
 args = parser.parse_args()
-# print(args)
 
 
 def prepare_cli():
 
     try:
-        if args.send:  # check if args.send exists
-            if args.send == None:  # check if None
+        if args.send:
+            if args.send == None:
                 raise Exception("Missing value for args.send")
-            elif args.send != None:  # Check if not None
+            elif args.send != None:
                 host_ip = args.send
-        else:  # Check if args.send NOT exist
+        else:
             raise Exception("Missing args.send")
     except Exception:
         host_ip = "192.168.0.13"
@@ -95,7 +94,9 @@ def prepare_cli():
 
 
 def cli_receive():
-    pass
+    server = RemoteHost()
+    while True:
+        server.receive()
 
 
 def cli_send(host, port, filename):
@@ -132,8 +133,14 @@ def main():
 
 
 if len(sys.argv) > 1:
-    host, port, file = prepare_cli()
-    cli_send(host, port, file)
+    try:
+        if args.receive == True:
+            cli_receive()
+    except Exception:
+        pass
+    else:
+        host, port, file = prepare_cli()
+        cli_send(host, port, file)
 
 if __name__ == "__main__":
     main()
