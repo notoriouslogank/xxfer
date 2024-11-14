@@ -7,9 +7,11 @@ from rich import print as print
 try:
     with open("config.yml", "r") as yml:
         get_config = yaml.safe_load(yml)
-except FileNotFoundError:
+except FileNotFoundError as E:
+    E.add_note(
+        "Please verify you have a config.yml file in the current working directory"
+    )
     print("Cannot locate config.yml.")
-
 settings = get_config["settings"]
 SEPARATOR = settings["separator"]
 ARCHIVE_NAME = settings["archive"]
