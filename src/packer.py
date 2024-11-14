@@ -7,12 +7,12 @@ from rich import print as print
 try:
     with open("config.yml", "r") as yml:
         get_config = yaml.safe_load(yml)
+        settings = get_config["settings"]
 except FileNotFoundError:
     print("Cannot locate config.yml.")
 else:
-    settings = get_config["settings"]
-finally:
-    print("finally")
+    pass
+
 SEPARATOR = settings["separator"]
 ARCHIVE_NAME = settings["archive"]
 DESTINATION_DIR = settings["dest_dir"]
