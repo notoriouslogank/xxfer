@@ -154,8 +154,8 @@ elif len(sys.argv) <= 3:
     try:
         if args.receive:
             print("args.receive loop")
-            cli_receive()
-            print(os.listdir(os.cwd()))
+            downloaded = cli_receive()
+            print(downloaded)
             sys.exit()
     except Exception:
         pass
