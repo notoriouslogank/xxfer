@@ -28,6 +28,7 @@ class RemoteHost:
 
     def receive(self):
         print(f"Now listening at {self.host}:{self.port}")
+        print("receive loop")
         try:
             s = socket.socket()
             s.bind((self.host, self.port))
@@ -62,6 +63,7 @@ if __name__ == "__main__":
     server = RemoteHost()
     while True:
         try:
+            print("main loop")
             server.receive()
             Compressor.unpack(ARCHIVE_NAME)
         except KeyboardInterrupt:

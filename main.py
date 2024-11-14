@@ -1,3 +1,4 @@
+import os
 import time
 import argparse
 import sys
@@ -106,6 +107,7 @@ def prepare_cli():
 
 
 def cli_receive():
+    print("cli receive")
     server = RemoteHost()
     filename = server.receive()
     return filename
@@ -135,6 +137,7 @@ def main():
                 server = RemoteHost()
                 while True:
                     try:
+                        print("main receive loop")
                         server.receive()
                     except KeyboardInterrupt:
                         sys.exit()
@@ -150,8 +153,9 @@ if len(sys.argv) >= 3:
 elif len(sys.argv) <= 3:
     try:
         if args.receive:
-            filename = cli_receive()
-            Compressor.unpack(filename)
+            print("args.receive loop")
+            cli_receive()
+            print(os.listdir(os.cwd()))
             sys.exit()
     except Exception:
         pass
