@@ -6,6 +6,7 @@ from time import sleep
 from prompt_toolkit import PromptSession
 
 from src.client import Client
+from src.packer import Compressor
 from src.server import RemoteHost
 
 parser = argparse.ArgumentParser(
@@ -95,8 +96,9 @@ def prepare_cli():
 
 def cli_receive():
     server = RemoteHost()
-    while True:
-        server.receive()
+    filename = server.receive()
+    print(filename)
+    return filename
 
 
 def cli_send(host, port, filename):
@@ -135,10 +137,11 @@ def main():
 if len(sys.argv) > 1:
     try:
         if args.receive == True:
+            print("Waiting for file(s)...")
             cli_receive()
+            Compressor.unpack()
     except Exception:
         pass
-    else:
         host, port, file = prepare_cli()
         cli_send(host, port, file)
 
