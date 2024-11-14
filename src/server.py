@@ -29,17 +29,16 @@ class RemoteHost:
 
     def receive(self):
         print(f"Now listening at {self.host}:{self.port}")
-        print("receive loop")
         try:
             s = socket.socket()
             s.bind((self.host, self.port))
             s.listen(5)
             client_socket, address = s.accept()
             received_data = client_socket.recv(BUFFER_SIZE).decode()
+            print(received_data)
             filename, filesize = received_data.split(SEPARATOR)
             filename = os.path.basename(filename)
             filesize = int(filesize)
-
             progress = tqdm.tqdm(
                 range(filesize),
                 f"[+] Receiving {filename}...",
@@ -54,8 +53,8 @@ class RemoteHost:
                         break
                     f.write(bytes_read)
                     progress.update(len(bytes_read))
-            client_socket.close()
-            s.close()
+                client_socket.close()
+                s.close()
         except KeyboardInterrupt:
             sys.exit()
 
@@ -64,7 +63,6 @@ if __name__ == "__main__":
     server = RemoteHost()
     while True:
         try:
-            print("main loop")
             server.receive()
             Compressor.unpack(ARCHIVE_NAME)
         except KeyboardInterrupt:

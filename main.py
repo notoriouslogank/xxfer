@@ -132,7 +132,6 @@ def main():
                 server = RemoteHost()
                 while True:
                     try:
-                        print("main receive loop")
                         server.receive()
                     except KeyboardInterrupt:
                         pass
