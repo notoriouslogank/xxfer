@@ -8,6 +8,16 @@ from prompt_toolkit import PromptSession
 from src.client import Client
 from src.packer import Compressor
 from src.server import RemoteHost
+import yaml
+
+
+with open("config.yml", "r") as yml:
+    configs = yaml.safe_load(yml)
+
+ARCHIVE_NAME = configs["client"]["archive_name"]
+SERVER_HOST = configs["server"]["server_host"]
+SERVER_PORT = configs["server"]["server_port"]
+
 
 parser = argparse.ArgumentParser(
     prog="xfer",
@@ -97,7 +107,6 @@ def prepare_cli():
 def cli_receive():
     server = RemoteHost()
     filename = server.receive()
-    print(filename)
     return filename
 
 
@@ -141,7 +150,9 @@ elif len(sys.argv) <= 3:
     try:
         if args.receive:
             print("Waiting for file(s)...")
-            Compressor.unpack(cli_receive())
+            filename = cli_receive()
+            Compressor.unpack(filename)
+            sys.exit()
     except Exception:
         pass
 
