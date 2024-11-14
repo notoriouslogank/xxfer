@@ -134,15 +134,16 @@ def main():
                 sys.exit()
 
 
-if len(sys.argv) > 1:
+if len(sys.argv) >= 3:
+    host, port, file = prepare_cli()
+    cli_send(host, port, file)
+elif len(sys.argv) <= 3:
     try:
         if args.receive:
             print("Waiting for file(s)...")
             Compressor.unpack(cli_receive())
     except Exception:
         pass
-    host, port, file = prepare_cli()
-    cli_send(host, port, file)
 
 if __name__ == "__main__":
     main()
