@@ -8,8 +8,9 @@ try:
     with open("config.yml", "r") as yml:
         get_config = yaml.safe_load(yml)
         settings = get_config["settings"]
-except [FileNotFoundError, NameError]:
+except (FileNotFoundError, NameError):
     print("Cannot locate config.yml.\nPlease ensure file exists in this directtory.")
+    raise SystemExit
 else:
     pass
 
