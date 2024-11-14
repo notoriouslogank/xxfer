@@ -1,9 +1,11 @@
 import os
 import socket
 import sys
+
 import tqdm
 import yaml
 from rich import print
+
 from src.packer import Compressor
 
 with open("config.yml", "r") as yml:
