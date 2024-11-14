@@ -20,7 +20,6 @@ ARCHIVE_NAME = configs["client"]["archive_name"]
 SERVER_HOST = configs["server"]["server_host"]
 SERVER_PORT = configs["server"]["server_port"]
 
-
 parser = argparse.ArgumentParser(
     prog="xfer",
     description="Application to send/receive files to/from remote machine.",
@@ -109,8 +108,7 @@ def prepare_cli():
 def cli_receive():
     print("cli receive")
     server = RemoteHost()
-    filename = server.receive()
-    return filename
+    server.receive()
 
 
 def cli_send(host, port, filename):
@@ -140,7 +138,7 @@ def main():
                         print("main receive loop")
                         server.receive()
                     except KeyboardInterrupt:
-                        sys.exit()
+                        pass
             if str(choice).lower() == "q":
                 print(f"Closing application\n")
                 sleep(0.1)
@@ -152,13 +150,10 @@ if len(sys.argv) >= 3:
     cli_send(host, port, file)
 elif len(sys.argv) <= 3:
     try:
-        if args.receive:
+        if args.receive == True:
             print("args.receive loop")
-            downloaded = cli_receive()
-            print(downloaded)
-            sys.exit()
+            cli_receive()
     except Exception:
         pass
-
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#    print("main")
