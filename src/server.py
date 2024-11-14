@@ -1,7 +1,7 @@
 import os
 import socket
 import sys
-import time
+
 import tqdm
 import yaml
 from rich import print
@@ -11,13 +11,14 @@ from src.packer import Compressor
 with open("config.yml", "r") as yml:
     configs = yaml.safe_load(yml)
 
-server_configs = configs["server"]
+settings = configs["settings"]
+known_hosts = configs["known-hosts"]
 
-SEPARATOR = server_configs["separator"]
-BUFFER_SIZE = server_configs["buffer_size"]
-SERVER_HOST = server_configs["server_host"]
-SERVER_PORT = server_configs["server_port"]
-ARCHIVE_NAME = configs["client"]["archive_name"]
+SEPARATOR = settings["separator"]
+BUFFER_SIZE = settings["buffer_size"]
+SERVER_HOST = settings["host"]
+SERVER_PORT = settings["port"]
+ARCHIVE_NAME = settings["archive"]
 
 
 class RemoteHost:

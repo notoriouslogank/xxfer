@@ -16,9 +16,11 @@ import yaml
 with open("config.yml", "r") as yml:
     configs = yaml.safe_load(yml)
 
-ARCHIVE_NAME = configs["client"]["archive_name"]
-SERVER_HOST = configs["server"]["server_host"]
-SERVER_PORT = configs["server"]["server_port"]
+settings = configs["settings"]
+
+ARCHIVE_NAME = settings["archive"]
+SERVER_HOST = settings["host"]
+SERVER_PORT = settings["port"]
 
 parser = argparse.ArgumentParser(
     prog="xfer",

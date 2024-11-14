@@ -9,16 +9,17 @@ from prompt_toolkit.output import ColorDepth
 from prompt_toolkit.styles import Style
 from rich import print
 from rich.panel import Panel
+
 from src.packer import Compressor
 
 with open("config.yml", "r") as yml:
     configs = yaml.safe_load(yml)
 
-client_configs = configs["client"]
-ARCHIVE_NAME = client_configs["archive_name"]
+settings = configs["settings"]
+ARCHIVE_NAME = settings["archive"]
 CURRENT_DIR = os.getcwd()
-SEPARATOR = configs["server"]["separator"]
-BUFFER_SIZE = configs["server"]["buffer_size"]
+SEPARATOR = settings["separator"]
+BUFFER_SIZE = settings["buffer_size"]
 
 
 class Client:
@@ -36,7 +37,7 @@ class Client:
     def get_known_hosts(self):
 
         host_list = []
-        for _ in client_configs["known_hosts"]:
+        for _ in configs["known_hosts"]:
             host_list.append(_)
         length = len(self.known_hosts)
         counter = length
@@ -55,8 +56,8 @@ class Client:
             remote_ip = session.prompt("Remote Server IP\n>> ")
             remote_port = session.prompt("Remote Server Port\n>> ")
             if str(remote_ip) in self.known_hosts:
-                remote_ip = client_configs["known_hosts"][remote_ip]["ip"]
-                remote_port = client_configs["known_hosts"][remote_ip]["port"]
+                remote_ip = configs["known_hosts"][remote_ip]["ip"]
+                remote_port = configs["known_hosts"][remote_ip]["port"]
                 self.host_ip = remote_ip
                 self.host_port = remote_port
                 return self.host_ip, self.host_port

@@ -7,10 +7,10 @@ from rich import print
 with open("config.yml", "r") as yml:
     get_config = yaml.safe_load(yml)
 
-server_configs = get_config["server"]
-SEPARATOR = server_configs["separator"]
-ARCHIVE_NAME = get_config["client"]["archive_name"]
-DESTINATION_DIR = get_config["server"]["destination_dir"]
+settings = get_config["settings"]
+SEPARATOR = settings["separator"]
+ARCHIVE_NAME = settings["archive"]
+DESTINATION_DIR = settings["dest_dir"]
 
 
 class Compressor:
