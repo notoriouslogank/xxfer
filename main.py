@@ -1,17 +1,13 @@
-import os
-import time
 import argparse
 import sys
 from pathlib import Path
 from time import sleep
 
-from prompt_toolkit import PromptSession
-from rich.prompt import Prompt
-from src.client import Client
-from src.packer import Compressor
-from src.server import RemoteHost
 import yaml
+from prompt_toolkit import PromptSession
 
+from src.client import Client
+from src.server import RemoteHost
 
 with open("config.yml", "r") as yml:
     configs = yaml.safe_load(yml)
