@@ -1,16 +1,16 @@
 known-hosts:
   public:
-    ip: '24.254.180.168'
-    port: 5002
+    ip:
+    port:
   mimir:
-    ip: '192.168.0.13'
-    port: 5002
+    ip:
+    port:
   desktop:
-    ip: '192.168.0.204'
-    port: 5001
+    ip:
+    port:
   localhost:
-    ip: '127.0.0.1'
-    port: 5001
+    ip: '0.0.0.0'
+    port: 5002
 
 settings:
   separator:
