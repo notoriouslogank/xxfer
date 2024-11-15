@@ -69,8 +69,8 @@ class RemoteHost:
                     progress.update(len(bytes_read))
         #                client_socket.close()
         #                s.close()
-        except KeyboardInterrupt:
-            logging.exception(KeyboardInterrupt)
+        except (KeyboardInterrupt, UnboundLocalError):
+            pass
         finally:
             client_socket.close()
             s.close()
