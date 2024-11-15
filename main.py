@@ -196,7 +196,7 @@ def launch_interactive():
             if choice == "s":
                 tui.send()
             elif choice == "r":
-                tui.receive()
+                tui.receive(tui.server)
             elif choice == "q":
                 tui.quit()
 
