@@ -205,10 +205,7 @@ def main():
                 except NameError:
                     logging.error(f"Missing information: {NameError()}")
     else:
-        cli = CLI("host", 0, ".")
-        cli.cli_receive()
-
-        # interactive()
+        interactive()
 
 
 if __name__ == "__main__":
