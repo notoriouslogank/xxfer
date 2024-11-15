@@ -1,3 +1,4 @@
+import logging
 import os
 import socket
 import sys
@@ -8,8 +9,21 @@ from rich import print
 
 from src.packer import Compressor
 
-with open("config.yml", "r") as yml:
-    configs = yaml.safe_load(yml)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter("%(asctime)s::%(levelname)s:%(message)s")
+file_handler = logging.FileHandler("xfer.log")
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
+try:
+    with open("config.yml", "r") as yml:
+        configs = yaml.safe_load(yml)
+except FileNotFoundError:
+    logger.error("No config.yml found")
+    pass
+else:
+    logger.info("Loaded config.yml")
 
 settings = configs["settings"]
 known_hosts = configs["known-hosts"]
@@ -53,13 +67,22 @@ class RemoteHost:
                         break
                     f.write(bytes_read)
                     progress.update(len(bytes_read))
-                client_socket.close()
-                s.close()
+        #                client_socket.close()
+        #                s.close()
         except KeyboardInterrupt:
-            sys.exit()
+            client_socket.close()
+            s.close()
+            logger.exception(SystemExit)
+            raise SystemExit
+        else:
+            pass
 
 
-if __name__ == "__main__":
+#            client_socket.close()
+#            s.close()
+
+
+def main():
     server = RemoteHost()
     while True:
         try:

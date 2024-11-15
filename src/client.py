@@ -120,7 +120,3 @@ def main():
         client = Client()
         host, port = client.get_server_info()
         client.send(host, int(port))
-
-
-if __name__ == "__main__":
-    main()
