@@ -163,7 +163,7 @@ class TUI:
         logger.debug("Listening for conection")
         while True:
             try:
-                self.server.receive()
+                self.server.receive(self)
             except KeyboardInterrupt:
                 logger.exception(SystemExit)
                 raise SystemExit
