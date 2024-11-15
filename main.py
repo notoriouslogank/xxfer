@@ -163,7 +163,7 @@ class TUI:
         logger.debug("Listening for conection")
         while True:
             try:
-                self.server.receive(self)
+                self.server.receive()
             except KeyboardInterrupt:
                 logger.exception(SystemExit)
                 raise SystemExit
@@ -192,7 +192,7 @@ def launch_interactive():
             raise SystemExit
         else:
             logging.debug("Exited try/except.")
-            tui = TUI()
+            tui = TUI(Client, RemoteHost)
             if choice == "s":
                 tui.send()
             elif choice == "r":
