@@ -101,7 +101,7 @@ class CLI:
         """Pretty print CLI client information"""
         print(self.host, self.port, self.file)
 
-    def cli_receive():
+    def cli_receive(self):
         """Listen for incoming connections; recieve incoming files"""
         while True:
             try:
