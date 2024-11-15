@@ -49,10 +49,10 @@ class RemoteHost:
             s.listen(5)
             client_socket, address = s.accept()
             received_data = client_socket.recv(BUFFER_SIZE).decode()
-            print(received_data)
             filename, filesize = received_data.split(SEPARATOR)
+            logging.debug(f"Received file {filename}{SEPARATOR}{int(filesize)/1024}")
             filename = os.path.basename(filename)
-            filesize = int(filesize) / 1024
+            filesize = int(filesize)
             progress = tqdm.tqdm(
                 range(filesize),
                 f"[+] Receiving {filename}...",
