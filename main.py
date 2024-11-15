@@ -103,13 +103,12 @@ class CLI:
 
     def cli_receive(self):
         """Listen for incoming connections; recieve incoming files"""
-        while True:
-            try:
-                server = RemoteHost()
-                server.receive()
-            except KeyboardInterrupt:
-                logger.debug("Receive stopped by user.")
-                raise SystemExit
+        try:
+            server = RemoteHost()
+            server.receive()
+        except KeyboardInterrupt:
+            logger.debug("Receive stopped by user.")
+            raise SystemExit
 
     def cli_send(self):
         """Send file via command line options"""
@@ -117,35 +116,6 @@ class CLI:
         client = Client()
         client.send(self.host, self.port, self.file)
         logging.info("Files sent successfully!")
-
-
-"""def interactive():
-    """ """Loop for interactive TUI session""" """
-    flow = 0
-    session = PromptSession()
-    while flow == 0:
-        try:
-            choice = session.prompt("Send or Receive?\n[S/r]\n>> ")
-            flow += 1
-        except KeyboardInterrupt:
-            sys.exit()
-        else:
-            if str(choice).lower() == "s":
-                client = Client()
-                host, port = client.get_server_info()
-                client.send(host, port)
-            elif str(choice).lower() == "r":
-                server = RemoteHost()
-                while True:
-                    try:
-                        server.receive()
-                    except KeyboardInterrupt:
-                        pass
-            if str(choice).lower() == "q":
-                print(f"Closing application\n")
-                sleep(0.1)
-                sys.exit()
-"""
 
 
 class TUI:
