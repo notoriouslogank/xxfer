@@ -71,9 +71,11 @@ class RemoteHost:
         #                s.close()
         except (KeyboardInterrupt, UnboundLocalError):
             pass
-        finally:
+        try:
             client_socket.close()
             s.close()
+        except UnboundLocalError:
+            sys.exit()
 
 
 if __name__ == "__main__":
