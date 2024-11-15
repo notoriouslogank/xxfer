@@ -1,0 +1,21 @@
+known-hosts:
+  public:
+    ip:
+    port:
+  mimir:
+    ip:
+    port:
+  desktop:
+    ip:
+    port:
+  localhost:
+    ip: '0.0.0.0'
+    port: 5002
+
+settings:
+  separator:
+  buffer_size: 4096
+  host: '0.0.0.0'
+  port: 5002
+  dest_dir: 'received_files'
+  archive:  'xfer.tar.gz'
