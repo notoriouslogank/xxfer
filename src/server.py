@@ -70,11 +70,10 @@ class RemoteHost:
         #                client_socket.close()
         #                s.close()
         except KeyboardInterrupt:
+            logging.exception(KeyboardInterrupt)
+        else:
             client_socket.close()
             s.close()
-            return
-        else:
-            pass
 
 
 if __name__ == "__main__":
