@@ -71,7 +71,7 @@ class RemoteHost:
         #                s.close()
         except KeyboardInterrupt:
             logging.exception(KeyboardInterrupt)
-        else:
+        finally:
             client_socket.close()
             s.close()
 
