@@ -150,7 +150,7 @@ class CLI:
 
 class TUI:
 
-    def __init__(self, client=Client, server=RemoteHost):
+    def __init__(self, client=Client(), server=RemoteHost()):
         self.client = client
         self.server = server
 
@@ -159,11 +159,11 @@ class TUI:
         host, port = self.client.get_server_info()
         self.client.send(host, port)
 
-    def receive(self, server):
+    def receive(self):
         logger.debug("Listening for conection")
         while True:
             try:
-                server.receive()
+                self.server.receive()
             except KeyboardInterrupt:
                 logger.exception(SystemExit)
                 raise SystemExit
@@ -192,11 +192,11 @@ def launch_interactive():
             raise SystemExit
         else:
             logging.debug("Exited try/except.")
-            tui = TUI(Client, RemoteHost)
+            tui = TUI()
             if choice == "s":
                 tui.send()
             elif choice == "r":
-                tui.receive(tui.server)
+                tui.receive()
             elif choice == "q":
                 tui.quit()
 
