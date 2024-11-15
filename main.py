@@ -92,7 +92,7 @@ logger.debug(f"Parsed the following args: {args}")
 class CLI:
     """Class for taking command line arguments"""
 
-    def __init__(self, host, port, file):
+    def __init__(self, host=Client, port=5002, file=Path.cwd()):
         self.host = host
         self.port = port
         self.file = file
@@ -150,7 +150,7 @@ class CLI:
 
 class TUI:
 
-    def __init__(self, client, server):
+    def __init__(self, client=Client, server=RemoteHost):
         self.client = client
         self.server = server
 
@@ -192,7 +192,7 @@ def launch_interactive():
             raise SystemExit
         else:
             logging.debug("Exited try/except.")
-            tui = TUI(Client(), RemoteHost())
+            tui = TUI()
             if choice == "s":
                 tui.send()
             elif choice == "r":
@@ -215,7 +215,7 @@ def main():
             if "receive" in args:
                 if args.receive == True:
                     cli = CLI()
-                    cli.cli_receive(cli)
+                    cli.cli_receive()
         except AttributeError:
             pass
     elif len(sys.argv) > 2:

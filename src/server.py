@@ -67,10 +67,10 @@ class RemoteHost:
                         break
                     f.write(bytes_read)
                     progress.update(len(bytes_read))
+                    client_socket.close()
         #                client_socket.close()
         #                s.close()
         except KeyboardInterrupt:
-            client_socket.close()
             s.close()
             logger.exception(SystemExit)
             raise SystemExit
