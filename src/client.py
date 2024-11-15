@@ -1,3 +1,4 @@
+import logging
 import os
 import socket
 
@@ -8,9 +9,18 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.output import ColorDepth
 from prompt_toolkit.styles import Style
 from rich import print
-from rich.panel import Panel
 
 from src.packer import Compressor
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter(
+    "%(asctime)s::%(levelname)s::Line %(lineno)s\n%(message)s"
+)
+file_handler = logging.FileHandler("xfer.log")
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
 
 with open("config.yml", "r") as yml:
     configs = yaml.safe_load(yml)
@@ -116,12 +126,8 @@ def populate_known_hosts(known_hosts: list, length: int):
     print(host_list)
 
 
-def main():
+if __name__ == "__main__":
     while True:
         client = Client()
         host, port = client.get_server_info()
         client.send(host, int(port))
-
-
-if __name__ == "__main__":
-    main()

@@ -1,3 +1,4 @@
+import logging
 import os
 import socket
 import sys
@@ -8,8 +9,21 @@ from rich import print
 
 from src.packer import Compressor
 
-with open("config.yml", "r") as yml:
-    configs = yaml.safe_load(yml)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter("%(asctime)s::%(levelname)s:%(message)s")
+file_handler = logging.FileHandler("xfer.log")
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
+try:
+    with open("config.yml", "r") as yml:
+        configs = yaml.safe_load(yml)
+except FileNotFoundError:
+    logger.error("No config.yml found")
+    pass
+else:
+    logger.info("Loaded config.yml")
 
 settings = configs["settings"]
 known_hosts = configs["known-hosts"]
@@ -29,7 +43,6 @@ class RemoteHost:
 
     def receive(self):
         print(f"Now listening at {self.host}:{self.port}")
-        print("receive loop")
         try:
             s = socket.socket()
             s.bind((self.host, self.port))
@@ -37,9 +50,9 @@ class RemoteHost:
             client_socket, address = s.accept()
             received_data = client_socket.recv(BUFFER_SIZE).decode()
             filename, filesize = received_data.split(SEPARATOR)
+            logging.debug(f"Received file {filename}{SEPARATOR}{int(filesize)/1024}")
             filename = os.path.basename(filename)
             filesize = int(filesize)
-
             progress = tqdm.tqdm(
                 range(filesize),
                 f"[+] Receiving {filename}...",
@@ -54,9 +67,14 @@ class RemoteHost:
                         break
                     f.write(bytes_read)
                     progress.update(len(bytes_read))
+        #                client_socket.close()
+        #                s.close()
+        except (KeyboardInterrupt, UnboundLocalError):
+            pass
+        try:
             client_socket.close()
             s.close()
-        except KeyboardInterrupt:
+        except UnboundLocalError:
             sys.exit()
 
 
@@ -64,7 +82,6 @@ if __name__ == "__main__":
     server = RemoteHost()
     while True:
         try:
-            print("main loop")
             server.receive()
             Compressor.unpack(ARCHIVE_NAME)
         except KeyboardInterrupt:

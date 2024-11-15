@@ -1,18 +1,21 @@
-client:
-  known_hosts:
-    logank:
-      ip: ''
-      port: 5002
-    desktop:
-      ip: ''
-      port:
-    localhost:
-      ip: ''
-      port:
-  archive_name: "xfer.tar.gz"
-server:
-  separator: "<SEPARATOR>"
+known-hosts:
+  public:
+    ip:
+    port:
+  mimir:
+    ip:
+    port:
+  desktop:
+    ip:
+    port:
+  localhost:
+    ip: '0.0.0.0'
+    port: 5002
+
+settings:
+  separator:
   buffer_size: 4096
-  server_host: '0.0.0.0'
-  server_port: 5002
-  destination_dir: "received_files"
+  host: '0.0.0.0'
+  port: 5002
+  dest_dir: 'received_files'
+  archive:  'xfer.tar.gz'
