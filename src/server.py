@@ -78,11 +78,7 @@ class RemoteHost:
             pass
 
 
-#            client_socket.close()
-#            s.close()
-
-
-def main():
+if __name__ == "__main__":
     server = RemoteHost()
     while True:
         try:

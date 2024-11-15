@@ -8,6 +8,7 @@ import yaml
 from prompt_toolkit import PromptSession
 
 from src.client import Client
+from src.packer import Compressor
 from src.server import RemoteHost
 
 logger = logging.getLogger(__name__)
@@ -15,7 +16,7 @@ logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter(
     "%(asctime)s::%(levelname)s::Line %(lineno)s\n%(message)s"
 )
-file_handler = logging.FileHandler("xfer.log")
+file_handler = logging.FileHandler("xfer.log", "w")
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
@@ -89,6 +90,7 @@ logger.debug(f"Parsed the following args: {args}")
 
 
 class CLI:
+    """Class for taking command line arguments"""
 
     def __init__(self, host, port, file):
         self.host = host
@@ -96,9 +98,11 @@ class CLI:
         self.file = file
 
     def print_me(self):
+        """Pretty print CLI client information"""
         print(self.host, self.port, self.file)
 
     def cli_receive():
+        """Listen for incoming connections; recieve incoming files"""
         while True:
             try:
                 server = RemoteHost()
@@ -108,13 +112,15 @@ class CLI:
                 raise SystemExit
 
     def cli_send(self):
+        """Send file via command line options"""
         logging.debug("Attempting to send:")
         client = Client()
         client.send(self.host, self.port, self.file)
         logging.info("Files sent successfully!")
 
 
-def interactive():
+"""def interactive():
+    """ """Loop for interactive TUI session""" """
     flow = 0
     session = PromptSession()
     while flow == 0:
@@ -139,14 +145,77 @@ def interactive():
                 print(f"Closing application\n")
                 sleep(0.1)
                 sys.exit()
+"""
+
+
+class TUI:
+
+    def __init__(self, client, server):
+        self.client = client
+        self.server = server
+
+    def send(self):
+        logger.debug("Sending file tui.send()")
+        host, port = self.client.get_server_info()
+        self.client.send(host, port)
+
+    def receive(self):
+        logger.debug("Listening for conection")
+        while True:
+            try:
+                self.server.receive()
+            except KeyboardInterrupt:
+                logger.exception(SystemExit)
+                raise SystemExit
+
+    def quit(self):
+        logging.debug("User closed application.")
+        sleep(0.5)
+        logging.debug(SystemExit)
+        raise SystemExit
+
+
+def launch_interactive():
+    logging.debug("Launching interactive.")
+    flow = 0
+    session = PromptSession()
+    while flow == 0:
+        try:
+            logging.debug("Entered try block.")
+            choice = session.prompt(
+                "Press [S] to Send Files\nPress [R] to Receive Files\nPress [Q] to Quit\n>> "
+            )
+            choice = str(choice).lower()
+            flow += 1
+        except KeyboardInterrupt:
+            logger.exception(SystemExit)
+            raise SystemExit
+        else:
+            logging.debug("Exited try/except.")
+            tui = TUI(Client(), RemoteHost())
+            if choice == "s":
+                tui.send()
+            elif choice == "r":
+                tui.receive()
+            elif choice == "q":
+                tui.quit()
 
 
 def main():
+    """Main Loop
+
+    Raises:
+        AttributeError: Missing given attribute, typically from bad command line args
+        SystemExit: Exits the system due to fatal error
+    """
+    if len(sys.argv) == 1:
+        launch_interactive()
     if len(sys.argv) == 2:
         try:
             if "receive" in args:
                 if args.receive == True:
-                    CLI.cli_receive()
+                    cli = CLI()
+                    cli.cli_receive(cli)
         except AttributeError:
             pass
     elif len(sys.argv) > 2:
@@ -204,8 +273,6 @@ def main():
                     cli.cli_send()
                 except NameError:
                     logging.error(f"Missing information: {NameError()}")
-    else:
-        interactive()
 
 
 if __name__ == "__main__":
