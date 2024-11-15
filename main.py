@@ -159,11 +159,11 @@ class TUI:
         host, port = self.client.get_server_info()
         self.client.send(host, port)
 
-    def receive(self):
+    def receive(self, server):
         logger.debug("Listening for conection")
         while True:
             try:
-                self.server.receive()
+                server.receive()
             except KeyboardInterrupt:
                 logger.exception(SystemExit)
                 raise SystemExit
@@ -196,7 +196,7 @@ def launch_interactive():
             if choice == "s":
                 tui.send()
             elif choice == "r":
-                tui.receive(tui.server)
+                tui.receive()
             elif choice == "q":
                 tui.quit()
 
