@@ -6,3 +6,4 @@ config.yml
 __init__.py
 src/__pycache__/*
 xfer.log
+.venv/
