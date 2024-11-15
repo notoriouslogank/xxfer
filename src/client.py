@@ -92,7 +92,7 @@ class Client:
         else:
             source_directory = os.path.join(filename)
         compressed_file = Compressor.compress(ARCHIVE_NAME, source_directory)
-        filesize = os.path.getsize(compressed_file)
+        filesize = os.path.getsize(compressed_file) / 1024
         os.chdir(CURRENT_DIR)
         s = socket.socket()
         print(f"[+] Connecting to {host}:{port}...\n")
