@@ -72,8 +72,7 @@ class RemoteHost:
         #                s.close()
         except KeyboardInterrupt:
             s.close()
-            logger.exception(SystemExit)
-            raise SystemExit
+            return
         else:
             pass
 
