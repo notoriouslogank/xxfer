@@ -52,7 +52,7 @@ class RemoteHost:
             print(received_data)
             filename, filesize = received_data.split(SEPARATOR)
             filename = os.path.basename(filename)
-            filesize = int(filesize)
+            filesize = int(filesize) / 1024
             progress = tqdm.tqdm(
                 range(filesize),
                 f"[+] Receiving {filename}...",
