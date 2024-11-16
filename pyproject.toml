@@ -22,7 +22,7 @@ Issues = "https://github.com/notoriouslogank/xfer/issues"
 
 
 [project.scripts]
-xxfer = "xxfer.xfer:main"
+xxfer = "xxfer.src:main"
 
 [tool.setuptools_scm]
 version_file = "xxfer/src/xxfer_version.py"
