@@ -28,4 +28,4 @@ xxfer = "xxfer.src:main"
 version_file = "xxfer/src/xxfer_version.py"
 
 [tool.setuptools.package-data]
-config = ["config.yml"]
+config = ["example_config.yml"]
