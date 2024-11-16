@@ -20,12 +20,5 @@ classifiers = [
 Homepage = "https://github.com/notoriouslogank/xfer.git"
 Issues = "https://github.com/notoriouslogank/xfer/issues"
 
-
-[project.scripts]
-xxfer = "xxfer.src:main"
-
-[tool.setuptools_scm]
-version_file = "xxfer/src/xxfer_version.py"
-
 [tool.setuptools.package-data]
 config = ["example_config.yml"]
