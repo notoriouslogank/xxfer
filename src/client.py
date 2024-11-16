@@ -10,14 +10,14 @@ from prompt_toolkit.output import ColorDepth
 from prompt_toolkit.styles import Style
 from rich import print
 
-from src.packer import Compressor
+from packer import Compressor
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter(
     "%(asctime)s::%(levelname)s::Line %(lineno)s\n%(message)s"
 )
-file_handler = logging.FileHandler("xfer.log")
+file_handler = logging.FileHandler("xxfer.log")
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
@@ -124,10 +124,3 @@ def populate_known_hosts(known_hosts: list, length: int):
         host_list.append(known_hosts[counter])
         counter -= 1
     print(host_list)
-
-
-if __name__ == "__main__":
-    while True:
-        client = Client()
-        host, port = client.get_server_info()
-        client.send(host, int(port))

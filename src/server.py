@@ -7,12 +7,12 @@ import tqdm
 import yaml
 from rich import print
 
-from src.packer import Compressor
+from packer import Compressor
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter("%(asctime)s::%(levelname)s:%(message)s")
-file_handler = logging.FileHandler("xfer.log")
+file_handler = logging.FileHandler("xxfer.log")
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
@@ -70,19 +70,10 @@ class RemoteHost:
         #                client_socket.close()
         #                s.close()
         except (KeyboardInterrupt, UnboundLocalError):
-            pass
+            client_socket.close()
+            s.close()
         try:
             client_socket.close()
             s.close()
         except UnboundLocalError:
             sys.exit()
-
-
-if __name__ == "__main__":
-    server = RemoteHost()
-    while True:
-        try:
-            server.receive()
-            Compressor.unpack(ARCHIVE_NAME)
-        except KeyboardInterrupt:
-            exit()

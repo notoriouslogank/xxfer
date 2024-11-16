@@ -7,16 +7,16 @@ from time import sleep
 import yaml
 from prompt_toolkit import PromptSession
 
-from src.client import Client
-from src.packer import Compressor
-from src.server import RemoteHost
+from client import Client
+from packer import Compressor
+from server import RemoteHost
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter(
     "%(asctime)s::%(levelname)s::Line %(lineno)s\n%(message)s"
 )
-file_handler = logging.FileHandler("xfer.log", "w")
+file_handler = logging.FileHandler("xxfer.log", "w")
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 

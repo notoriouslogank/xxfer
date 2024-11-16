@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "xxfer"
-version = "0.1.6"
+version = "0.2.0"
 authors = [{ name = "logank", email = "logan.aker1989@gmail.com" }]
 description = "package for transferring files across the internet with sockets"
 readme = "README.md"
