@@ -19,6 +19,3 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/notoriouslogank/xfer.git"
 Issues = "https://github.com/notoriouslogank/xfer/issues"
-
-[tool.setuptools.package-data]
-config = ["example_config.yml"]

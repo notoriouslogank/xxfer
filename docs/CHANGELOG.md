@@ -10,12 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Breaking Changes
 
 - Restructured entire codebase (everything now within ./src/)
+- All constants and global variables now import from constants.py
+- Renamed many (all?) settings entires in config.yml
 
 ### Added
 
 - This CHANGELOG
 - README (now contains information)
 - New configuration setting: logfile
+- New install.py function to create necessary directories and files upon first run
 
 ### Changed
 
