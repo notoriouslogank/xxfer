@@ -3,7 +3,6 @@ dist/
 *.spec
 config.yml
 *.pyc
-__init__.py
 src/__pycache__/*
 xxfer.log
 .venv/
