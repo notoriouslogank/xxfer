@@ -3,33 +3,24 @@ import os
 import socket
 
 import tqdm
-import yaml
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.output import ColorDepth
 from prompt_toolkit.styles import Style
 from rich import print
 
+from constants import Constants
 from packer import Compressor
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter(
-    "%(asctime)s::%(levelname)s::Line %(lineno)s\n%(message)s"
-)
-file_handler = logging.FileHandler("xxfer.log")
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
+constants = Constants("xxfer", "notoriouslogank")
 
-
-with open("config.yml", "r") as yml:
-    configs = yaml.safe_load(yml)
-
-settings = configs["settings"]
-ARCHIVE_NAME = settings["archive"]
+SEPARATOR = constants.SEPARATOR
+BUFFER_SIZE = constants.BUFFER_SIZE
+HOST = constants.HOST
+PORT = constants.PORT
+ARCHIVE_NAME = constants.ARCHIVE_NAME
 CURRENT_DIR = os.getcwd()
-SEPARATOR = settings["separator"]
-BUFFER_SIZE = settings["buffer_size"]
 
 
 class Client:
