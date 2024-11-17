@@ -4,39 +4,35 @@ import sys
 from pathlib import Path
 from time import sleep
 
-import yaml
 from prompt_toolkit import PromptSession
 
-from src.client import Client
-from src.packer import Compressor
-from src.server import RemoteHost
+from client import Client
+from constants import Constants
+from server import RemoteHost
+
+constants = Constants("xxfer", "notoriouslogank")
+
+APP_AUTHOR = constants.APP_AUTHOR
+APP_NAME = constants.APP_NAME
+ARCHIVE_NAME = constants.ARCHIVE_NAME
+BUFFER_SIZE = constants.BUFFER_SIZE
+CONFIGFILE = constants.CONFIGFILE
+SEPARATOR = constants.SEPARATOR
+HOST = constants.HOST
+PORT = constants.PORT
+LOGFILE = constants.LOGFILE
+DOWNLOAD_DIR = constants.DOWNLOAD_DIR
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 formatter = logging.Formatter(
     "%(asctime)s::%(levelname)s::Line %(lineno)s\n%(message)s"
 )
-file_handler = logging.FileHandler("xfer.log", "w")
+file_handler = logging.FileHandler(f"{LOGFILE}", "w")
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
 logger.info("Program start")
-
-try:
-    with open("config.yml", "r") as yml:
-        configs = yaml.safe_load(yml)
-        settings = configs["settings"]
-except FileNotFoundError:
-    logger.critical("Unable to locate config.yml.  Program will now close.")
-    sleep(0.5)
-    print("Error.  Please see xfer.main.log for more information.")
-    sys.exit()
-else:
-    logger.info("Loaded config.yml")
-
-ARCHIVE_NAME = settings["archive"]
-SERVER_HOST = settings["host"]
-SERVER_PORT = settings["port"]
 
 
 parser = argparse.ArgumentParser(

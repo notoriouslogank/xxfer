@@ -4,42 +4,25 @@ import socket
 import sys
 
 import tqdm
-import yaml
 from rich import print
 
-from src.packer import Compressor
+from constants import Constants
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter("%(asctime)s::%(levelname)s:%(message)s")
-file_handler = logging.FileHandler("xfer.log")
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
+constants = Constants("xxfer", "notoriouslogank")
 
-try:
-    with open("config.yml", "r") as yml:
-        configs = yaml.safe_load(yml)
-except FileNotFoundError:
-    logger.error("No config.yml found")
-    pass
-else:
-    logger.info("Loaded config.yml")
-
-settings = configs["settings"]
-known_hosts = configs["known-hosts"]
-
-SEPARATOR = settings["separator"]
-BUFFER_SIZE = settings["buffer_size"]
-SERVER_HOST = settings["host"]
-SERVER_PORT = settings["port"]
-ARCHIVE_NAME = settings["archive"]
+SEPARATOR = constants.SEPARATOR
+BUFFER_SIZE = constants.BUFFER_SIZE
+HOST = constants.HOST
+PORT = constants.PORT
+ARCHIVE_NAME = constants.ARCHIVE_NAME
 
 
 class RemoteHost:
 
     def __init__(self):
-        self.host = SERVER_HOST
-        self.port = SERVER_PORT
+        self.host = HOST
+        self.port = PORT
 
     def receive(self):
         print(f"Now listening at {self.host}:{self.port}")
@@ -70,19 +53,10 @@ class RemoteHost:
         #                client_socket.close()
         #                s.close()
         except (KeyboardInterrupt, UnboundLocalError):
-            pass
+            client_socket.close()
+            s.close()
         try:
             client_socket.close()
             s.close()
         except UnboundLocalError:
             sys.exit()
-
-
-if __name__ == "__main__":
-    server = RemoteHost()
-    while True:
-        try:
-            server.receive()
-            Compressor.unpack(ARCHIVE_NAME)
-        except KeyboardInterrupt:
-            exit()
