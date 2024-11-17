@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "xxfer"
 version = "0.2.0"
 authors = [{ name = "logank", email = "logan.aker1989@gmail.com" }]
-description = "package for transferring files across the internet with sockets"
+description = "xxfer is a Python package for sending and/or receiving files to/from a remote source.  Both the sender and the receiver must run the application on their respective machines."
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
