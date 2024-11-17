@@ -3,7 +3,7 @@ import pathlib
 
 import platformdirs
 import yaml
-from install import Installer
+from install import Installer, KnownHosts
 
 logger = logging.getLogger(__name__)
 
@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 class Constants:
 
     installer = Installer()
+    hostsfile = KnownHosts()
 
     def __init__(self, APP_NAME, APP_AUTHOR):
         self.installer.make_files_and_dirs()
@@ -18,6 +19,7 @@ class Constants:
         self.APP_AUTHOR = APP_AUTHOR
         self.CONFIGFILE = self.find_configfile()
         self.LOGFILE = self.find_logfile()
+        self.HOSTSFILE = self.hostsfile.HOSTSFILE
         with open(self.CONFIGFILE, "r") as yml:
             configs = yaml.safe_load(yml)
             settings = configs["SETTINGS"]
@@ -26,7 +28,6 @@ class Constants:
         self.BUFFER_SIZE = settings["BUFFER_SIZE"]
         self.HOST = settings["HOST"]
         self.PORT = settings["PORT"]
-        # self.LOGFILE = self.find_logfile()
         self.DOWNLOAD_DIR = self.find_download_dir()
         self.DATA_DIR = self.find_data_dir()
         self.ARCHIVE_NAME = settings["ARCHIVE_NAME"]

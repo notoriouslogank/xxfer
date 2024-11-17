@@ -8,7 +8,7 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.output import ColorDepth
 from prompt_toolkit.styles import Style
 from rich import print
-
+import yaml
 from constants import Constants
 from packer import Compressor
 
@@ -21,6 +21,7 @@ HOST = constants.HOST
 PORT = constants.PORT
 ARCHIVE_NAME = constants.ARCHIVE_NAME
 CURRENT_DIR = os.getcwd()
+HOSTSFILE = constants.HOSTSFILE
 
 
 class Client:
@@ -36,9 +37,10 @@ class Client:
     autocompleter = WordCompleter([known_hosts])
 
     def get_known_hosts(self):
-
+        with open(HOSTSFILE, "r") as config:
+            known_hosts = yaml.safe_load(config)
         host_list = []
-        for _ in configs["known_hosts"]:
+        for _ in known_hosts["KNOWN_HOSTS"]:
             host_list.append(_)
         length = len(self.known_hosts)
         counter = length
@@ -54,11 +56,10 @@ class Client:
             color_depth=ColorDepth.TRUE_COLOR,
         )
         try:
-            remote_ip = session.prompt("Remote Server IP\n>> ")
-            remote_port = session.prompt("Remote Server Port\n>> ")
-            if str(remote_ip) in self.known_hosts:
-                remote_ip = configs["known_hosts"][remote_ip]["ip"]
-                remote_port = configs["known_hosts"][remote_ip]["port"]
+            knownhost = session.prompt("Use known host: \n>> ")
+            if knownhost in self.known_hosts["KNOWN_HOSTS"]:
+                remote_ip = self.known_hosts["KNOWN_HOSTS"][knownhost]["HOST"]
+                remote_port = self.known_hosts["KNOWN_HOSTS"][knownhost]["PORT"]
                 self.host_ip = remote_ip
                 self.host_port = remote_port
                 return self.host_ip, self.host_port
