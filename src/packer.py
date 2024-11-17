@@ -1,22 +1,27 @@
 import os
 import tarfile
 
-import yaml
+from constants import Constants
 from rich import print as print
 
-try:
-    with open("config.yml", "r") as yml:
-        get_config = yaml.safe_load(yml)
-        settings = get_config["settings"]
-except (FileNotFoundError, NameError):
-    print("Cannot locate config.yml.\nPlease ensure file exists in this directtory.")
-    raise SystemExit
-else:
-    pass
+constants = Constants("xxfer", "notoriouslogank")
 
-SEPARATOR = settings["separator"]
-ARCHIVE_NAME = settings["archive"]
-DESTINATION_DIR = settings["dest_dir"]
+SEPARATOR = constants.SEPARATOR
+ARCHIVE_NAME = constants.ARCHIVE_NAME
+DESTINATION_DIR = constants.DATA_DIR
+# try:
+#    with open("config.yml", "r") as yml:
+#        get_config = yaml.safe_load(yml)
+#        settings = get_config["settings"]
+# except (FileNotFoundError, NameError):
+#    print("Cannot locate config.yml.\nPlease ensure file exists in this directtory.")
+#    raise SystemExit
+# else:
+#    pass
+
+# SEPARATOR = settings["separator"]
+# ARCHIVE_NAME = settings["archive"]
+# DESTINATION_DIR = settings["dest_dir"]
 
 
 class Compressor:
