@@ -3,6 +3,7 @@ import pathlib
 
 import platformdirs
 import yaml
+
 from install import Installer, KnownHosts
 
 logger = logging.getLogger(__name__)
@@ -31,7 +32,7 @@ class Constants:
         self.DATA_DIR = self.find_data_dir()
         self.ARCHIVE_NAME = settings["ARCHIVE_NAME"]
 
-    def get_filepaths(self):
+    def get_filepaths(self) -> pathlib.Path:
         user_config_dir = platformdirs.user_config_path(self.APP_NAME)
         user_log_dir = platformdirs.user_log_path(self.APP_NAME)
         user_data_dir = platformdirs.user_data_path(self.APP_NAME, self.APP_AUTHOR)
@@ -41,24 +42,24 @@ class Constants:
         )
         return user_data_dir, user_config_dir, user_log_dir, user_download_dir
 
-    def find_data_dir(self):
+    def find_data_dir(self) -> pathlib.Path:
         user_data_dir, _, _, _ = self.get_filepaths()
         logging.info(f"DATA_DIR = {user_data_dir}")
         return user_data_dir
 
-    def find_download_dir(self):
+    def find_download_dir(self) -> pathlib.Path:
         _, _, _, user_download_dir = self.get_filepaths()
         logging.debug(f"DONLOAD_DIR = {user_download_dir}")
         return user_download_dir
 
-    def find_configfile(self):
+    def find_configfile(self) -> pathlib.Path:
         _, user_config_path_stem, _, _ = self.get_filepaths()
         config_file_name = "config.yml"
         config_file = pathlib.Path.joinpath(user_config_path_stem, config_file_name)
         logging.info(f"CONFIGFILE = {config_file}")
         return config_file
 
-    def find_logfile(self):
+    def find_logfile(self) -> pathlib.Path:
         _, _, user_log_dir, _ = self.get_filepaths()
         logfile_name = f"{self.APP_NAME}.log"
         logfile = pathlib.Path.joinpath(user_log_dir, logfile_name)
