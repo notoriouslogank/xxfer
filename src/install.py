@@ -64,8 +64,11 @@ class KnownHosts:
         self.HOSTSFILE = pathlib.Path.joinpath(self.dir, self.name)
 
     def write(self, hostsfile):
-        with open(hostsfile, "w") as file:
-            yaml.dump(self.data, file, default_flow_style=False)
+        if hostsfile:
+            pass
+        else:
+            with open(hostsfile, "w") as file:
+                yaml.dump(self.data, file, default_flow_style=False)
 
 
 class Installer:
