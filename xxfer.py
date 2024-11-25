@@ -6,9 +6,9 @@ from time import sleep
 
 from prompt_toolkit import PromptSession
 
-from client import Client
-from constants import Constants
-from server import RemoteHost
+from src.constants import Constants
+from src.listener import LocalClient
+from src.sender import RemoteClient
 
 constants = Constants("xxfer", "notoriouslogank")
 
@@ -22,6 +22,7 @@ HOST = constants.HOST
 PORT = constants.PORT
 LOGFILE = constants.LOGFILE
 DOWNLOAD_DIR = constants.DOWNLOAD_DIR
+HOSTSFILE = constants.HOSTSFILE
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -85,10 +86,10 @@ args = parser.parse_args()
 logger.debug(f"Parsed the following args: {args}")
 
 
-class CLI:
+class CommandLineInterface:
     """Class for taking command line arguments"""
 
-    def __init__(self, host=Client, port=5002, file=Path.cwd()):
+    def __init__(self, host=RemoteClient, port=PORT, file=Path.cwd()):
         self.host = host
         self.port = port
         self.file = file
@@ -100,8 +101,8 @@ class CLI:
     def cli_receive(self):
         """Listen for incoming connections; recieve incoming files"""
         try:
-            server = RemoteHost()
-            server.receive()
+            client = LocalClient(SEPARATOR, BUFFER_SIZE, HOST, PORT, ARCHIVE_NAME)
+            client.receive()
         except KeyboardInterrupt:
             logger.debug("Receive stopped by user.")
             raise SystemExit
@@ -109,21 +110,31 @@ class CLI:
     def cli_send(self):
         """Send file via command line options"""
         logging.debug("Attempting to send:")
-        client = Client()
+        client = RemoteClient(
+            HOSTSFILE, BUFFER_SIZE, SEPARATOR, HOST, PORT, ARCHIVE_NAME
+        )
         client.send(self.host, self.port, self.file)
         logging.info("Files sent successfully!")
 
 
-class TUI:
+class InteractivePrompt:
 
-    def __init__(self, client=Client(), server=RemoteHost()):
+    def __init__(
+        self,
+        client=RemoteClient(
+            HOSTSFILE, BUFFER_SIZE, SEPARATOR, HOST, PORT, ARCHIVE_NAME
+        ),
+        server=LocalClient(SEPARATOR, BUFFER_SIZE, HOST, PORT, ARCHIVE_NAME),
+    ):
         self.client = client
         self.server = server
 
     def send(self):
         logger.debug("Sending file tui.send()")
-        host, port = self.client.get_server_info()
-        self.client.send(host, port)
+        host = self.client.get_remote_ip()
+        port = self.client.get_remote_port()
+        file = self.client.get_target_files()
+        self.client.send(host, port, file)
 
     def receive(self):
         logger.debug("Listening for conection")
@@ -131,7 +142,7 @@ class TUI:
             try:
                 self.server.receive()
             except KeyboardInterrupt:
-                logger.exception(SystemExit)
+                logger.exception(KeyboardInterrupt)
                 raise SystemExit
 
     def quit(self):
@@ -158,13 +169,17 @@ def launch_interactive():
             raise SystemExit
         else:
             logging.debug("Exited try/except.")
-            tui = TUI()
+            interactive_prompt = InteractivePrompt()
             if choice == "s":
-                tui.send()
+                interactive_prompt.send()
             elif choice == "r":
-                tui.receive()
+                interactive_prompt = InteractivePrompt(
+                    RemoteClient,
+                    LocalClient(SEPARATOR, BUFFER_SIZE, HOST, PORT, ARCHIVE_NAME),
+                )
+                interactive_prompt.receive()
             elif choice == "q":
-                tui.quit()
+                interactive_prompt.quit()
 
 
 def main():
@@ -179,9 +194,9 @@ def main():
     if len(sys.argv) == 2:
         try:
             if "receive" in args:
+                client = LocalClient(SEPARATOR, BUFFER_SIZE, HOST, PORT, ARCHIVE_NAME)
                 if args.receive == True:
-                    cli = CLI()
-                    cli.cli_receive()
+                    client.receive()
         except AttributeError:
             pass
     elif len(sys.argv) > 2:
@@ -233,7 +248,7 @@ def main():
                 sys.exit()
             else:
                 try:
-                    cli = CLI(host, port, file)
+                    cli = CommandLineInterface(host, port, file)
                     cli.print_me()
                     logger.info(f"Creating CLI: {cli.host}:{cli.port} {cli.file}")
                     cli.cli_send()

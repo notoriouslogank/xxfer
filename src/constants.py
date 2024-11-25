@@ -9,7 +9,6 @@ logger = logging.getLogger(__name__)
 
 
 class Constants:
-
     installer = Installer()
     hostsfile = KnownHosts()
 
@@ -65,6 +64,3 @@ class Constants:
         logfile = pathlib.Path.joinpath(user_log_dir, logfile_name)
         logging.info(f"{logfile}")
         return logfile
-
-
-constants = Constants("xxfer", "notoriouslogank")

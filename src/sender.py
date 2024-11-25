@@ -8,24 +8,16 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.output import ColorDepth
 from prompt_toolkit.styles import Style
 from rich import print
-import yaml
-from constants import Constants
+
 from packer import Compressor
 
 logger = logging.getLogger(__name__)
-constants = Constants("xxfer", "notoriouslogank")
 
-SEPARATOR = constants.SEPARATOR
-BUFFER_SIZE = constants.BUFFER_SIZE
-HOST = constants.HOST
-PORT = constants.PORT
-ARCHIVE_NAME = constants.ARCHIVE_NAME
 CURRENT_DIR = os.getcwd()
-HOSTSFILE = constants.HOSTSFILE
 
 
-class Client:
-    known_hosts = ""
+class RemoteClient:
+    known_hosts = []
     style = Style.from_dict(
         {
             "completion-menu.completion": "bg:#008888 #ffffff",
@@ -36,44 +28,50 @@ class Client:
     )
     autocompleter = WordCompleter([known_hosts])
 
-    def get_known_hosts(self):
-        with open(HOSTSFILE, "r") as config:
-            known_hosts = yaml.safe_load(config)
-        host_list = []
-        for _ in known_hosts["KNOWN_HOSTS"]:
-            host_list.append(_)
-        length = len(self.known_hosts)
-        counter = length
-        while counter > 0:
-            self.known_hosts.join(host_list.pop())
-            counter -= 1
-        return self.known_hosts
+    def __init__(self, hostsfile, buffer_size, separator, host, port, archive_name):
+        self.hostsfile = hostsfile
+        self.buffer_size = buffer_size
+        self.separator = separator
+        self.host = host
+        self.port = port
+        self.archive_name = archive_name
+        self.current_dir = os.getcwd()
 
-    def get_server_info(self):
-        session = PromptSession(
-            completer=self.autocompleter,
-            style=self.style,
-            color_depth=ColorDepth.TRUE_COLOR,
-        )
+    def prepare_payload(self, source_directory):
+        compressed_file = Compressor.compress(self.archive_name, source_directory)
+        return compressed_file
+
+    def get_remote_ip(self):
+        session = PromptSession(style=self.style, color_depth=ColorDepth.TRUE_COLOR)
         try:
-            knownhost = session.prompt("Use known host: \n>> ")
-            if knownhost in self.known_hosts["KNOWN_HOSTS"]:
-                remote_ip = self.known_hosts["KNOWN_HOSTS"][knownhost]["HOST"]
-                remote_port = self.known_hosts["KNOWN_HOSTS"][knownhost]["PORT"]
-                self.host_ip = remote_ip
-                self.host_port = remote_port
-                return self.host_ip, self.host_port
-            elif str(remote_ip) not in self.known_hosts:
-                self.host_ip = remote_ip
-                self.host_port = int(remote_port)
-                return self.host_ip, self.host_port
+            remote_ip = session.prompt("\nEnter remote IP: \n>>")
         except KeyboardInterrupt:
             pass
         else:
-            print(f"[+] Remote Host: {self.host_ip}:{self.host_port}")
+            print(f"[+] Remote IP: {remote_ip}")
+            return remote_ip
+
+    def get_remote_port(self):
+        session = PromptSession(style=self.style, color_depth=ColorDepth.TRUE_COLOR)
+        try:
+            remote_port = session.prompt("\nEnter remote Port: \n>>")
+        except KeyboardInterrupt:
+            pass
+        else:
+            print(f"[+] Remote Port: {remote_port}")
+            return int(remote_port)
+
+    def get_target_files(self):
+        session = PromptSession(style=self.style, color_depth=ColorDepth.TRUE_COLOR)
+        try:
+            target_files = session.prompt("\nEnter target file(s) to send: \n>>")
+        except KeyboardInterrupt:
+            pass
+        else:
+            print(f"[+] File(s) to send: {target_files}")
+            return os.path.join(target_files)
 
     def send(self, host, port, filename=None):
-
         if filename == None:
             session = PromptSession(style=self.style, color_depth=ColorDepth.TRUE_COLOR)
             source_directory = os.path.join(
@@ -82,15 +80,15 @@ class Client:
                 )
             )
         else:
-            source_directory = os.path.join(filename)
-        compressed_file = Compressor.compress(ARCHIVE_NAME, source_directory)
-        filesize = os.path.getsize(compressed_file)
+            source_directory = os.getcwd()
+            compressed_file = self.prepare_payload(source_directory)
+            filesize = os.path.getsize(compressed_file)
         os.chdir(CURRENT_DIR)
         s = socket.socket()
         print(f"[+] Connecting to {host}:{port}...\n")
         s.connect((host, port))
         print(f"[+] Connected!\n")
-        s.send(f"{ARCHIVE_NAME}{SEPARATOR}{filesize}".encode())
+        s.send(f"{self.archive_name}{self.separator}{filesize}".encode())
 
         progress = tqdm.tqdm(
             range(filesize),
@@ -102,7 +100,7 @@ class Client:
 
         with open(compressed_file, "rb") as f:
             while True:
-                bytes_read = f.read(BUFFER_SIZE)
+                bytes_read = f.read(self.buffer_size)
                 if not bytes_read:
                     break
                 s.sendall(bytes_read)
