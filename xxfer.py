@@ -25,7 +25,7 @@ DOWNLOAD_DIR = constants.DOWNLOAD_DIR
 HOSTSFILE = constants.HOSTSFILE
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter(
     "%(asctime)s::%(levelname)s::Line %(lineno)s\n%(message)s"
 )
