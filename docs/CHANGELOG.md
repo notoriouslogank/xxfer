@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 27-11-2024
+
+### Breaking Changes
+
+- Renamed xxfer.py to main.py to (hopefully) allow for direct execution with ``python3 -m xxfer``.
+
 ## [0.3.1] - 27-11-2024
 
 ### Hotfix
