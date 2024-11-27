@@ -4,7 +4,7 @@ import pathlib
 import platformdirs
 import yaml
 
-from knownhosts import KnownHosts
+from .knownhosts import KnownHosts
 from src.install.install import Installer
 
 logger = logging.getLogger(__name__)
