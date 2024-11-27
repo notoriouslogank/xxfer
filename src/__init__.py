@@ -1,6 +1,6 @@
 import logging
 
-from configs.constants import Constants
+from src.configs.constants import Constants
 
 constants = Constants("xxfer", "notoriouslogank")
 LOGFILE = constants.LOGFILE
