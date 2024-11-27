@@ -6,7 +6,7 @@ from time import sleep
 
 from prompt_toolkit import PromptSession
 
-from src.constants import Constants
+from src.configs import Constants
 from src.listener import LocalClient
 from src.sender import RemoteClient
 
@@ -89,7 +89,9 @@ logger.debug(f"Parsed the following args: {args}")
 class CommandLineInterface:
     """Class for taking command line arguments"""
 
-    def __init__(self, host=RemoteClient, port=PORT, file=Path.cwd()):
+    def __init__(
+        self, host: str = RemoteClient, port: int = PORT, file: Path = Path.cwd()
+    ):
         self.host = host
         self.port = port
         self.file = file
@@ -129,14 +131,14 @@ class InteractivePrompt:
         self.client = client
         self.server = server
 
-    def send(self):
+    def send(self) -> None:
         logger.debug("Sending file tui.send()")
         host = self.client.get_remote_ip()
         port = self.client.get_remote_port()
         file = self.client.get_target_files()
         self.client.send(host, port, file)
 
-    def receive(self):
+    def receive(self) -> None:
         logger.debug("Listening for conection")
         while True:
             try:
@@ -145,20 +147,20 @@ class InteractivePrompt:
                 logger.exception(KeyboardInterrupt)
                 raise SystemExit
 
-    def quit(self):
-        logging.debug("User closed application.")
+    def quit(self) -> None:
+        logger.info("User closed application.")
         sleep(0.5)
-        logging.debug(SystemExit)
+        logger.debug(SystemExit)
         raise SystemExit
 
 
-def launch_interactive():
-    logging.debug("Launching interactive.")
+def launch_interactive() -> None:
+    logger.info("Launching interactive.")
     flow = 0
     session = PromptSession()
     while flow == 0:
         try:
-            logging.debug("Entered try block.")
+            logger.debug("Entered try block.")
             choice = session.prompt(
                 "Press [S] to Send Files\nPress [R] to Receive Files\nPress [Q] to Quit\n>> "
             )
@@ -168,7 +170,7 @@ def launch_interactive():
             logger.exception(SystemExit)
             raise SystemExit
         else:
-            logging.debug("Exited try/except.")
+            logger.debug("Exited try/except.")
             interactive_prompt = InteractivePrompt()
             if choice == "s":
                 interactive_prompt.send()
@@ -189,15 +191,18 @@ def main():
         AttributeError: Missing given attribute, typically from bad command line args
         SystemExit: Exits the system due to fatal error
     """
+    logger.debug("Starting main loop")
     if len(sys.argv) == 1:
         launch_interactive()
     if len(sys.argv) == 2:
         try:
             if "receive" in args:
+                logger.debug("User selected 'receive'.")
                 client = LocalClient(SEPARATOR, BUFFER_SIZE, HOST, PORT, ARCHIVE_NAME)
                 if args.receive == True:
                     client.receive()
         except AttributeError:
+            logger.debug("AttributeError in main() loop")
             pass
     elif len(sys.argv) > 2:
         try:
@@ -223,17 +228,17 @@ def main():
                     port = args.port
                 elif "port" in args and args.port == None:
                     logger.warning(
-                        f"Missing Port information.  Using default port: 5002"
+                        f"Missing Port information.  Using default port: {PORT}"
                     )
-                    port = 5002
+                    port = PORT
                 elif "port" not in args:
-                    logger.info("No Port flag provided. Using default Port 5002.")
-                    port = 5002
+                    logger.info(f"No Port flag provided. Using default Port {PORT}.")
+                    port = PORT
             except AttributeError:
                 logger.critical(
-                    "Missing Port information.\nSince [-p --port] was given but not None, using default Port 5002."
+                    f"Missing Port information.\nSince [-p --port] was given but not None, using default Port {PORT}."
                 )
-                port = 5002
+                port = PORT
             else:
                 logger.debug(f"IP: {host}\nPort: {port}")
             try:
@@ -253,7 +258,7 @@ def main():
                     logger.info(f"Creating CLI: {cli.host}:{cli.port} {cli.file}")
                     cli.cli_send()
                 except NameError:
-                    logging.error(f"Missing information: {NameError()}")
+                    logger.error(f"Missing information: {NameError()}")
 
 
 if __name__ == "__main__":
