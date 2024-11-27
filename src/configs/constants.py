@@ -4,8 +4,8 @@ import pathlib
 import platformdirs
 import yaml
 
-from configs import knownhosts
-from install.install import Installer
+from knownhosts import KnownHosts
+from src.install.install import Installer
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class Constants:
 
     installer = Installer()
-    hostsfile = knownhosts.KnownHosts()
+    hostsfile = KnownHosts()
 
     def __init__(self, APP_NAME, APP_AUTHOR):
         self.installer.make_files_and_dirs()
