@@ -19,7 +19,7 @@ class LocalClient:
         self.buffer_size = buffer_size
 
     def write_data_to_file(
-        self, filename: Path, client_socket: socket, progress: tqdm[int]
+        self, filename: Path, client_socket: socket, progress: tqdm.tqdm
     ) -> None:
         """Write received data to output file
 
