@@ -10,7 +10,7 @@ from prompt_toolkit.output import ColorDepth
 from prompt_toolkit.styles import Style
 from rich import print
 
-from packer import Compressor
+from .packer import Compressor
 
 logger = logging.getLogger(__name__)
 
