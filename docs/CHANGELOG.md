@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 27-11-2024
+
+### Breaking Changes
+
+- Entire project has been restructured; there are now separate 'configs' and 'install' modules within 'src/'
+- Updated requirements.txt to accurately reflect current requirements
+- Almost all local imports have changed due to restructuring
+
+### Added
+
+- Docstrings for every function in codebase
+- Useful logging messages for (nearly) every function
+
+### Known Bugs
+
+- Compressing and sending files seems to take longer than previous versions
+
 ## [0.2.0] - TBD
 
 ### Breaking Changes
