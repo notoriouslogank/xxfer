@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "xxfer"
-version = "0.3.1"
+version = "0.4.0"
 authors = [{ name = "logank", email = "logan.aker1989@gmail.com" }]
 description = "xxfer is a Python package for sending and/or receiving files to/from a remote source.  Both the sender and the receiver must run the application on their respective machines."
 readme = "README.md"
