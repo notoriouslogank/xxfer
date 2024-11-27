@@ -1,6 +1,7 @@
 import logging
 import os
 import socket
+from pathlib import Path
 
 import tqdm
 from prompt_toolkit import PromptSession
@@ -28,7 +29,15 @@ class RemoteClient:
     )
     autocompleter = WordCompleter([known_hosts])
 
-    def __init__(self, hostsfile, buffer_size, separator, host, port, archive_name):
+    def __init__(
+        self,
+        hostsfile: Path,
+        buffer_size: int,
+        separator: str,
+        host: str,
+        port: int,
+        archive_name: str,
+    ):
         self.hostsfile = hostsfile
         self.buffer_size = buffer_size
         self.separator = separator
@@ -37,11 +46,24 @@ class RemoteClient:
         self.archive_name = archive_name
         self.current_dir = os.getcwd()
 
-    def prepare_payload(self, source_directory):
+    def prepare_payload(self, source_directory: Path) -> Path:
+        """Compress file(s) to archive to prepare for transmission
+
+        Args:
+            source_directory (Path): Path to file(s) to be sent
+
+        Returns:
+            Path: Path to compressed archive
+        """
         compressed_file = Compressor.compress(self.archive_name, source_directory)
         return compressed_file
 
-    def get_remote_ip(self):
+    def get_remote_ip(self) -> str:
+        """Get IP address for receiving client
+
+        Returns:
+            str: Remote IP address
+        """
         session = PromptSession(style=self.style, color_depth=ColorDepth.TRUE_COLOR)
         try:
             remote_ip = session.prompt("\nEnter remote IP: \n>>")
@@ -51,7 +73,12 @@ class RemoteClient:
             print(f"[+] Remote IP: {remote_ip}")
             return remote_ip
 
-    def get_remote_port(self):
+    def get_remote_port(self) -> int:
+        """Get port number for remote connection
+
+        Returns:
+            int: Port number for remote connection
+        """
         session = PromptSession(style=self.style, color_depth=ColorDepth.TRUE_COLOR)
         try:
             remote_port = session.prompt("\nEnter remote Port: \n>>")
@@ -61,7 +88,12 @@ class RemoteClient:
             print(f"[+] Remote Port: {remote_port}")
             return int(remote_port)
 
-    def get_target_files(self):
+    def get_target_files(self) -> Path:
+        """Get file(s) to be sent
+
+        Returns:
+            Path: Path to file(s) to compress and send
+        """
         session = PromptSession(style=self.style, color_depth=ColorDepth.TRUE_COLOR)
         try:
             target_files = session.prompt("\nEnter target file(s) to send: \n>>")
@@ -71,7 +103,14 @@ class RemoteClient:
             print(f"[+] File(s) to send: {target_files}")
             return os.path.join(target_files)
 
-    def send(self, host, port, filename=None):
+    def send(self, host: str, port: int, filename: Path = None):
+        """Send file(s) to remote connection
+
+        Args:
+            host (str): Destination IP address
+            port (int): Destination port
+            filename (Path, optional): Path to file(s) to send. Defaults to <'.'>.
+        """
         if filename == None:
             session = PromptSession(style=self.style, color_depth=ColorDepth.TRUE_COLOR)
             source_directory = os.path.join(
@@ -108,9 +147,15 @@ class RemoteClient:
 
 
 def populate_known_hosts(known_hosts: list, length: int):
+    """Add client(s) to list of known hosts
+
+    Args:
+        known_hosts (list): List of known hosts to which to append
+        length (int): Length of known hosts file
+    """
     counter = length
     host_list = []
     while counter > 0:
         host_list.append(known_hosts[counter])
         counter -= 1
-    print(host_list)
+    logger.info("Populated known hosts list")
