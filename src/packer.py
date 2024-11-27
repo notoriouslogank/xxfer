@@ -5,7 +5,7 @@ from pathlib import Path
 
 from rich import print as print
 
-from constants import Constants
+from configs.constants import Constants
 
 constants = Constants("xxfer", "notoriouslogank")
 
