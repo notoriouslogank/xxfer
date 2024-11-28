@@ -9,3 +9,4 @@ xxfer.log
 xxfer.egg-info
 virtualenv/
 test/
+*.enc
