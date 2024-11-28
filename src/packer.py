@@ -1,10 +1,9 @@
+import logging
 import os
 import secrets
-import pyzipper
-import logging
-import tarfile
 from pathlib import Path
 
+import pyzipper
 from rich import print as print
 
 from src.configs.constants import Constants
@@ -23,7 +22,16 @@ random_string = random_bytes.hex()
 class Compressor:
     """Class to represent a Compressor, allowing for compressing and decompressing archives"""
 
-    def compress(input_folder, output_file):
+    def compress(input_folder: Path, output_file: Path) -> Path:
+        """Compress and encrypt folder to zipped archive
+
+        Args:
+            input_folder (Path): Folder too compress and send
+            output_file (Path): Output file path
+
+        Returns:
+            Path: Path to encrypted, zipped archive
+        """
         with pyzipper.AESZipFile(
             f"{output_file}.enc", "w", compression=pyzipper.ZIP_LZMA
         ) as encrypted:
@@ -58,7 +66,14 @@ class Compressor:
         power_string = f"{round(size)} {power_labels[n]}"
         return power_string
 
-    def decompress(input_file, output_folder, password):
+    def decompress(input_file: Path, output_folder: Path, password: str) -> None:
+        """Decrypt and decompress zipped archive
+
+        Args:
+            input_file (Path): Zipped archive to decrypt and decompress
+            output_folder (Path): Destination folder after unzipping/decrypting
+            password (str): Decryption key
+        """
         with pyzipper.AESZipFile(input_file) as f:
             f.setpassword(password.encode("utf-8"))
             f.extractall(path=output_folder)
