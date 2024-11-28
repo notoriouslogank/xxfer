@@ -2,9 +2,11 @@ import logging
 import os
 import socket
 from pathlib import Path
-from src.packer import Compressor
+
 import tqdm
 from rich import print
+
+from src.packer import Compressor
 
 logger = logging.getLogger(__name__)
 
