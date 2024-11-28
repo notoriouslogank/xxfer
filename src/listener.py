@@ -84,5 +84,6 @@ class LocalClient:
             client_socket.close()
 
     def unpack(self):
+        """Prompt for decryption password and decompress file"""
         password = input("Decryption password:\n>> ")
         Compressor.decompress("xxfer.zip", "xxfer_unzipped", password=password)
