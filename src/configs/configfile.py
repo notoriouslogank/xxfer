@@ -17,7 +17,7 @@ class ConfigFile:
         "HOST": "0.0.0.0",
         "PORT": 5002,
         "DOWNLOAD_DIR": "xxfer_received",
-        "ARCHIVE_NAME": "xxfer.tar.gz",
+        "ARCHIVE_NAME": "xxfer.zip",
     }
     data = {"SETTINGS": settings}
     dir = platformdirs.user_config_path(APP_NAME)
