@@ -151,7 +151,7 @@ class InteractivePrompt:
                 self.server.receive()
             except KeyboardInterrupt:
                 logger.exception(KeyboardInterrupt)
-                raise SystemExit
+            raise SystemExit
 
     def quit(self) -> None:
         """Gracefully close the application
