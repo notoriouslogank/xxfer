@@ -96,11 +96,11 @@ class CommandLineInterface:
         self.port = port
         self.file = file
 
-    def print_me(self):
+    def print_me(self) -> None:
         """Pretty print CLI client information"""
         print(self.host, self.port, self.file)
 
-    def cli_receive(self):
+    def cli_receive(self) -> None:
         """Listen for incoming connections; recieve incoming files"""
         try:
             client = LocalClient(SEPARATOR, BUFFER_SIZE, HOST, PORT, ARCHIVE_NAME)
@@ -109,7 +109,7 @@ class CommandLineInterface:
             logger.debug("Receive stopped by user.")
             raise SystemExit
 
-    def cli_send(self):
+    def cli_send(self) -> None:
         """Send file via command line options"""
         logging.debug("Attempting to send:")
         client = RemoteClient(
@@ -132,6 +132,7 @@ class InteractivePrompt:
         self.server = server
 
     def send(self) -> None:
+        """Send file to destination"""
         logger.debug("Sending file tui.send()")
         host = self.client.get_remote_ip()
         port = self.client.get_remote_port()
@@ -139,6 +140,11 @@ class InteractivePrompt:
         self.client.send(host, port, file)
 
     def receive(self) -> None:
+        """Receive incoming file
+
+        Raises:
+            SystemExit: Exits application
+        """
         logger.debug("Listening for conection")
         while True:
             try:
@@ -148,6 +154,11 @@ class InteractivePrompt:
                 raise SystemExit
 
     def quit(self) -> None:
+        """Gracefully close the application
+
+        Raises:
+            SystemExit: Close application
+        """
         logger.info("User closed application.")
         sleep(0.5)
         logger.debug(SystemExit)
@@ -155,6 +166,11 @@ class InteractivePrompt:
 
 
 def launch_interactive() -> None:
+    """Loop for interactive operation
+
+    Raises:
+        SystemExit: Close the application
+    """
     logger.info("Launching interactive.")
     flow = 0
     session = PromptSession()
