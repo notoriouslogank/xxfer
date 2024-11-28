@@ -2,7 +2,7 @@ import logging
 import os
 import socket
 from pathlib import Path
-
+from packer import Compressor
 import tqdm
 from rich import print
 
@@ -77,3 +77,5 @@ class LocalClient:
             logger.debug("Encountered exception in receive method.")
             s.close()
             client_socket.close()
+        password = input("Decryption password: \n>> ")
+        Compressor.decompress("xxfer.zip", "xxfer_unzipped", password=password)
