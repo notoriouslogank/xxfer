@@ -36,7 +36,7 @@ class Compressor:
                     arcname = os.path.relpath(file_path, input_folder)
                     encrypted.write(file_path, arcname=arcname)
         print(f"Key: {random_string}")
-        return output_file
+        return f"{output_file}.enc"
 
     # def compress(output_filename: str, source_directory: Path) -> Path:
     #    """Compress a dir to an archive
