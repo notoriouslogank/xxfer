@@ -23,7 +23,6 @@ PORT = constants.PORT
 LOGFILE = constants.LOGFILE
 DOWNLOAD_DIR = constants.DOWNLOAD_DIR
 HOSTSFILE = constants.HOSTSFILE
-KEYFILE_PATH = constants.KEYFILE_PATH
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
