@@ -67,7 +67,7 @@ class RemoteClient:
         """
         session = PromptSession(style=self.style, color_depth=ColorDepth.TRUE_COLOR)
         try:
-            remote_ip = session.prompt("\nEnter remote IP: \n>>")
+            remote_ip = session.prompt("\nEnter remote IP: \n>> ")
         except KeyboardInterrupt:
             pass
         else:
@@ -82,7 +82,7 @@ class RemoteClient:
         """
         session = PromptSession(style=self.style, color_depth=ColorDepth.TRUE_COLOR)
         try:
-            remote_port = session.prompt("\nEnter remote Port: \n>>")
+            remote_port = session.prompt("\nEnter remote Port: \n>> ")
         except KeyboardInterrupt:
             pass
         else:
@@ -97,7 +97,7 @@ class RemoteClient:
         """
         session = PromptSession(style=self.style, color_depth=ColorDepth.TRUE_COLOR)
         try:
-            target_files = session.prompt("\nEnter target file(s) to send: \n>>")
+            target_files = session.prompt("\nEnter target file(s) to send: \n>> ")
         except KeyboardInterrupt:
             pass
         else:
