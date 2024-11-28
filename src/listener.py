@@ -2,7 +2,7 @@ import logging
 import os
 import socket
 from pathlib import Path
-from packer import Compressor
+from src.packer import Compressor
 import tqdm
 from rich import print
 
