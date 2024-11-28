@@ -27,13 +27,19 @@ class ConfigFile:
         self.CONFIGFILE = pathlib.Path.joinpath(self.dir, self.name).resolve()
 
     def make_config_directory(self):
+        """Create config directory if it does not exist"""
         if self.CONFIGFILE.exists() == False:
             logger.debug(f"Created config directory: {self.dir}")
             os.makedirs(self.dir, exist_ok=True)
         else:
             pass
 
-    def write(self, configfile):
+    def write(self, configfile: pathlib.Path):
+        """Write configuration data to file (config.yml)
+
+        Args:
+            configfile (pathlib.Path): Path to config.yml
+        """
         with open(configfile, "w") as file:
             logger.debug(f"Wrote config file: {configfile}")
             yaml.dump(self.data, file, default_flow_style=False)

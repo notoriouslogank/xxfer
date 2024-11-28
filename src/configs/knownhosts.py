@@ -19,7 +19,12 @@ class KnownHosts:
     def __init__(self):
         self.HOSTSFILE = pathlib.Path.joinpath(self.dir, self.name)
 
-    def write(self, hostsfile):
+    def write(self, hostsfile: pathlib.Path) -> None:
+        """Write known hosts file
+
+        Args:
+            hostsfile (pathlib.Path): Path to known hosts file
+        """
         if hostsfile:
             logger.info(f"Hostsfile already exists: {hostsfile}")
             pass
