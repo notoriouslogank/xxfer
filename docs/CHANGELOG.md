@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 28-11-2024
+
+### Happy Thanksgiving
+
+- Code is my family now
+
+### Added
+
+- Docstrings for modules that were lacking them:
+  - configs.constants
+  - configs.logfile
+- Installation, Usage, and Contributing sections in README.md
+
+### Known Bugs
+
+- Occasional error when receiving files via Interactive Mode
+- Previous versions' bugs persist (see: 0.3.1)
+
+### Added
+
 ## [0.3.1] - 27-11-2024
 
 ### Hotfix
