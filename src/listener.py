@@ -5,11 +5,17 @@ from pathlib import Path
 
 import tqdm
 from rich import print
-from src.crypto.decrypt import DecryptKeeper
-from src.configs.constants import Constants
 
-logger = logging.getLogger(__name__)
+from src.configs.constants import Constants
+from src.crypto.decrypt import DecryptKeeper
+
 constants = Constants("xxfer", "notoriouslogank")
+LOGFILE = constants.LOGFILE
+APP_NAME = constants.APP_NAME
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter("%(asctime)s:%(levelname)s:Line %(lineno)s\n%(message)s")
+file_handler = logging.FileHandler(f"{LOGFILE}", "a")
 KEYFILE = constants.KEYFILE_PATH
 
 
@@ -62,7 +68,11 @@ class LocalClient:
         self.write_data_to_file(
             filename=filename, client_socket=client_socket, progress=progress
         )
-        decrypt = DecryptKeeper(filename, keyfile=KEYFILE)
+        decrypt = DecryptKeeper(
+            filename,
+            keyfile=KEYFILE,
+            key=b"tub2KF2FFIj09jGqk1dFxiyW6A1UVTWU-biND98yOOQ=",
+        )
         decrypted_file = decrypt.decrypt_file()
         self.write_data_to_file(decrypted_file, client_socket)
 
@@ -84,3 +94,7 @@ class LocalClient:
             logger.debug("Encountered exception in receive method.")
             s.close()
             client_socket.close()
+
+
+decryptor = DecryptKeeper("xxfer.tar.gz", keyfile=constants.KEYFILE_PATH)
+decryptor.decrypt_file("xxfer.tar.gz.encrypted")

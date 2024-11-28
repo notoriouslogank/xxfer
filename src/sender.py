@@ -15,9 +15,13 @@ from src.crypto.decrypt import DecryptKeeper
 from src.crypto.encrypt import EncryptKeeper
 from src.packer import Compressor
 
-logger = logging.getLogger(__name__)
-# constants = Constants("xxfer", "notoriouslogank")
 constants = const("xxfer", "notoriouslogank")
+LOGFILE = constants.LOGFILE
+APP_NAME = constants.APP_NAME
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter("%(asctime)s:%(levelname)s:Line %(lineno)s\n%(message)s")
+file_handler = logging.FileHandler(f"{LOGFILE}", "a")
 KEYFILE = constants.KEYFILE_PATH
 CURRENT_DIR = os.getcwd()
 

@@ -6,11 +6,16 @@ from cryptography.fernet import Fernet
 
 from src.configs.constants import Constants
 
-encrypted_file_extension = "encrypted"
+constants = Constants("xxfer", "notoriouslogank")
+LOGFILE = constants.LOGFILE
+APP_NAME = constants.APP_NAME
 logger = logging.getLogger(__name__)
-APP_NAME = "xxfer"
-APP_AUTHOR = "notoriouslogank"
-constants = Constants(APP_NAME, APP_AUTHOR)
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter("%(asctime)s:%(levelname)s:Line %(lineno)s\n%(message)s")
+file_handler = logging.FileHandler(f"{LOGFILE}", "a")
+
+encrypted_file_extension = "encrypted"
+
 KEYFILE = constants.KEYFILE_PATH
 
 
