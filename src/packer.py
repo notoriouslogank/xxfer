@@ -38,43 +38,6 @@ class Compressor:
         print(f"Key: {random_string}")
         return f"{output_file}.enc"
 
-    # def compress(output_filename: str, source_directory: Path) -> Path:
-    #    """Compress a dir to an archive
-
-    #        Args:
-    #            output_filename (str): Relative filename, including extension
-    #            source_directory (Path): Directory to be archived
-
-    #        Returns:
-    #            Path: An archive representing the input dir
-    #        """
-
-    # logger.debug(
-    #    f"Compressing {source_directory} to {source_directory}/#{output_filename}."
-    # )
-    # print(f"[+] Compressing {source_directory} to {output_filename}...")
-    # os.chdir(source_directory)
-    # archive_path = os.path.join(os.getcwd(), output_filename)
-    # with tarfile.open(archive_path, "w:gz") as tar:
-    #    for file in os.listdir(os.getcwd()):
-    #        tar.add(file)
-    #    os.chdir(os.getcwd())
-    # logger.debug(f"Archive path: {archive_path}")
-    # return archive_path
-
-    def unpack(archive: Path) -> None:
-        """Unpack an archive into a dir of files
-
-        Args:
-            archive (Path): Archive to unpack
-        """
-        print(f"[+] Decompressing {archive}...")
-        logger.debug(f"Unpacking archive: {archive}")
-        file = os.path.join(archive)
-        with tarfile.open(file, "r:gz") as tar:
-            tar.extractall()
-        os.remove(file)
-
     def format_bytes(size: int) -> str:
         """Format the bytesize to be human readable
 
@@ -93,3 +56,8 @@ class Compressor:
             n += 1
         power_string = f"{round(size)} {power_labels[n]}"
         return power_string
+
+    def decompress(input_file, output_folder, password):
+        with pyzipper.AESZipFile(input_file) as f:
+            f.setpassword(password.encode("utf-8"))
+            f.extractall(path=output_folder)

@@ -120,7 +120,7 @@ class RemoteClient:
                 )
             )
         else:
-            source_directory = os.getcwd()
+            source_directory = filename
             compressed_file = self.prepare_payload(source_directory)
             filesize = os.path.getsize(compressed_file)
         os.chdir(CURRENT_DIR)
