@@ -7,3 +7,5 @@ src/__pycache__/*
 xxfer.log
 .venv/
 xxfer.egg-info
+virtualenv/
+test/
