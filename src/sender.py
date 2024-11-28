@@ -10,10 +10,10 @@ from prompt_toolkit.output import ColorDepth
 from prompt_toolkit.styles import Style
 from rich import print
 
-from src.packer import Compressor
 from src.configs.constants import Constants as const
 from src.crypto.decrypt import DecryptKeeper
 from src.crypto.encrypt import EncryptKeeper
+from src.packer import Compressor
 
 logger = logging.getLogger(__name__)
 # constants = Constants("xxfer", "notoriouslogank")
