@@ -9,10 +9,22 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.output import ColorDepth
 from prompt_toolkit.styles import Style
 from rich import print
+from src.configs.constants import Constants
+
+constants = Constants("xxfer", "notoriouslogank")
+LOGFILE = constants.LOGFILE
 
 from .packer import Compressor
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter(
+    "%(asctime)s::%(levelname)s::Line %(lineno)s\n%(message)s"
+)
+file_handler = logging.FileHandler(f"{LOGFILE}", "w")
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
 
 CURRENT_DIR = os.getcwd()
 
