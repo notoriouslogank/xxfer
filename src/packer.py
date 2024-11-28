@@ -36,7 +36,8 @@ class Compressor:
                     arcname = os.path.relpath(file_path, input_folder)
                     encrypted.write(file_path, arcname=arcname)
         print(f"Key: {random_string}")
-        return f"{output_file}.enc"
+        encrypted_file = os.path.join(f"{output_file}.enc")
+        return encrypted_file
 
     def format_bytes(size: int) -> str:
         """Format the bytesize to be human readable
