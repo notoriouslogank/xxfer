@@ -55,7 +55,8 @@ class RemoteClient:
         Returns:
             Path: Path to compressed archive
         """
-        compressed_file = Compressor.compress(self.archive_name, source_directory)
+        compressed_file = Compressor.compress(source_directory, self.archive_name)
+        print("Prepared payload")
         return compressed_file
 
     def get_remote_ip(self) -> str:
