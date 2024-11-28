@@ -77,5 +77,7 @@ class LocalClient:
             logger.debug("Encountered exception in receive method.")
             s.close()
             client_socket.close()
-        password = input("Decryption password: \n>> ")
+
+    def unpack(self):
+        password = input("Decryption password:\n>> ")
         Compressor.decompress("xxfer.zip", "xxfer_unzipped", password=password)

@@ -6,11 +6,11 @@ from time import sleep
 
 from prompt_toolkit import PromptSession
 
-from src.configs import Constants
+from src.configs.constants import Constants as const
 from src.listener import LocalClient
 from src.sender import RemoteClient
 
-constants = Constants("xxfer", "notoriouslogank")
+constants = const("xxfer", "notoriouslogank")
 
 APP_AUTHOR = constants.APP_AUTHOR
 APP_NAME = constants.APP_NAME
@@ -23,6 +23,7 @@ PORT = constants.PORT
 LOGFILE = constants.LOGFILE
 DOWNLOAD_DIR = constants.DOWNLOAD_DIR
 HOSTSFILE = constants.HOSTSFILE
+KEYFILE_PATH = constants.KEYFILE_PATH
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -201,6 +202,7 @@ def main():
                 client = LocalClient(SEPARATOR, BUFFER_SIZE, HOST, PORT, ARCHIVE_NAME)
                 if args.receive == True:
                     client.receive()
+                client.unpack()
         except AttributeError:
             logger.debug("AttributeError in main() loop")
             pass
