@@ -94,7 +94,3 @@ class LocalClient:
             logger.debug("Encountered exception in receive method.")
             s.close()
             client_socket.close()
-
-
-decryptor = DecryptKeeper("xxfer.tar.gz", keyfile=constants.KEYFILE_PATH)
-decryptor.decrypt_file("xxfer.tar.gz.encrypted")
