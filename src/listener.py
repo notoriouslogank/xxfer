@@ -77,6 +77,9 @@ class LocalClient:
             logger.debug("Encountered exception in receive method.")
             s.close()
             client_socket.close()
+        else:
+            s.close()
+            client_socket.close()
 
     def unpack(self):
         password = input("Decryption password:\n>> ")
