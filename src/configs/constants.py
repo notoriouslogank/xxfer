@@ -4,7 +4,7 @@ import pathlib
 import platformdirs
 import yaml
 
-from .knownhosts import KnownHosts
+from src.configs.knownhosts import KnownHosts
 from src.install.install import Installer
 
 logger = logging.getLogger(__name__)
@@ -33,6 +33,8 @@ class Constants:
         self.DOWNLOAD_DIR = self.find_download_dir()
         self.DATA_DIR = self.find_data_dir()
         self.ARCHIVE_NAME = settings["ARCHIVE_NAME"]
+        self.KEYFILE = settings["KEYFILE"]
+        self.KEYFILE_PATH = self.find_keyfile_dir()
 
     def get_filepaths(self) -> pathlib.Path:
         """Get paths for default directories relative to platform
@@ -68,6 +70,11 @@ class Constants:
         _, _, _, user_download_dir = self.get_filepaths()
         logger.debug(f"DONLOAD_DIR = {user_download_dir}")
         return user_download_dir
+
+    def find_keyfile_dir(self) -> pathlib.Path:
+        _, user_config_path_stem, _, _ = self.get_filepaths()
+        keyfile_path = pathlib.Path.joinpath(user_config_path_stem, self.KEYFILE)
+        return keyfile_path
 
     def find_configfile(self) -> pathlib.Path:
         """Get path to user configuration file

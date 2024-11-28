@@ -18,6 +18,7 @@ class ConfigFile:
         "PORT": 5002,
         "DOWNLOAD_DIR": "xxfer_received",
         "ARCHIVE_NAME": "xxfer.tar.gz",
+        "KEYFILE": "key.key",
     }
     data = {"SETTINGS": settings}
     dir = platformdirs.user_config_path(APP_NAME)

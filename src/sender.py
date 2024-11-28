@@ -10,10 +10,15 @@ from prompt_toolkit.output import ColorDepth
 from prompt_toolkit.styles import Style
 from rich import print
 
-from .packer import Compressor
+from src.packer import Compressor
+from src.configs.constants import Constants as const
+from src.crypto.decrypt import DecryptKeeper
+from src.crypto.encrypt import EncryptKeeper
 
 logger = logging.getLogger(__name__)
-
+# constants = Constants("xxfer", "notoriouslogank")
+constants = const("xxfer", "notoriouslogank")
+KEYFILE = constants.KEYFILE_PATH
 CURRENT_DIR = os.getcwd()
 
 
@@ -56,7 +61,9 @@ class RemoteClient:
             Path: Path to compressed archive
         """
         compressed_file = Compressor.compress(self.archive_name, source_directory)
-        return compressed_file
+        encrypt = EncryptKeeper(file=compressed_file, keyfile=KEYFILE)
+        encrypted_file = encrypt.encrypt_file(compressed_file)
+        return encrypted_file
 
     def get_remote_ip(self) -> str:
         """Get IP address for receiving client

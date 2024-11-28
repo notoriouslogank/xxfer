@@ -5,8 +5,12 @@ from pathlib import Path
 
 import tqdm
 from rich import print
+from src.crypto.decrypt import DecryptKeeper
+from src.configs.constants import Constants
 
 logger = logging.getLogger(__name__)
+constants = Constants("xxfer", "notoriouslogank")
+KEYFILE = constants.KEYFILE_PATH
 
 
 class LocalClient:
@@ -58,6 +62,9 @@ class LocalClient:
         self.write_data_to_file(
             filename=filename, client_socket=client_socket, progress=progress
         )
+        decrypt = DecryptKeeper(filename, keyfile=KEYFILE)
+        decrypted_file = decrypt.decrypt_file()
+        self.write_data_to_file(decrypted_file, client_socket)
 
     def receive(self) -> None:
         """Open a socket and listen for incoming connection"""
