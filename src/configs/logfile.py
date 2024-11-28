@@ -17,6 +17,7 @@ class LogFile:
         self.LOGFILE = pathlib.Path.joinpath(self.dir, self.logname).resolve()
 
     def make_log_directory(self):
+        """Create logfile directory if it does not exist"""
         if self.LOGFILE.exists() == False:
             logger.debug(f"Making Log directory: {self.dir}")
             os.makedirs(self.dir, exist_ok=True)
